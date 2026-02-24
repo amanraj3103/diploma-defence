@@ -90,15 +90,15 @@ export function PracticeSession({ initialTopicIds = [] }: PracticeSessionProps) 
   const currentTopicTitle = getQuestionTitle(currentTopic.id) ?? currentTopic.title;
 
   return (
-    <main className="min-h-screen bg-slate-50 p-4 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <main className="min-h-screen bg-slate-50 p-3 text-slate-900 sm:p-4 dark:bg-slate-950 dark:text-slate-100">
       <div className="mx-auto max-w-5xl space-y-4">
         <header className="rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
+            <div className="min-w-0 flex-1">
               <p className="text-sm text-slate-500">Random Topic Practice</p>
-              <h1 className="text-xl font-bold">Defence Simulation</h1>
+              <h1 className="text-lg font-bold sm:text-xl">Defence Simulation</h1>
             </div>
-            <div className="flex gap-2">
+            <div className="flex w-full flex-wrap gap-2 sm:w-auto">
               <Link
                 href={`/topic/${currentTopic.id}`}
                 className="rounded-md border border-slate-300 px-3 py-2 text-sm dark:border-slate-700"
@@ -146,14 +146,14 @@ export function PracticeSession({ initialTopicIds = [] }: PracticeSessionProps) 
             Topic {topicIndex + 1} of {topics.length}
           </div>
 
-          <h2 className="text-2xl font-bold">
+          <h2 className="break-words text-xl font-bold sm:text-2xl">
             {currentTopic.id}. {currentTopicTitle}
           </h2>
           <p className="mt-1 text-sm text-slate-500">{currentTopic.domain}</p>
 
           <div className="mt-4 rounded-lg bg-slate-900 p-4 text-center text-white dark:bg-slate-100 dark:text-slate-900">
             <p className="text-sm">Time Left</p>
-            <p className="text-4xl font-bold">
+            <p className="text-3xl font-bold sm:text-4xl">
               {minute}:{second}
             </p>
           </div>

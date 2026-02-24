@@ -28,6 +28,7 @@ export function TopicWorkspace({ topicId }: TopicWorkspaceProps) {
   const [search, setSearch] = useState("");
   const [domainFilter, setDomainFilter] = useState("All");
   const [darkMode, setDarkMode] = useState(true);
+  const [showSidebar, setShowSidebar] = useState(false);
 
   const topic = allTopics.find((item) => item.id === topicId) ?? allTopics[0];
 
@@ -55,8 +56,30 @@ export function TopicWorkspace({ topicId }: TopicWorkspaceProps) {
   return (
     <div className={darkMode ? "dark" : ""}>
       <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-        <div className="mx-auto flex max-w-[1600px] gap-4 p-4">
-          <aside className="h-[calc(100vh-2rem)] w-80 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+        <div className="mx-auto max-w-[1600px] p-3 sm:p-4">
+          <div className="mb-3 flex items-center justify-between lg:hidden">
+            <button
+              type="button"
+              onClick={() => setShowSidebar((value) => !value)}
+              className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+            >
+              {showSidebar ? "Hide Topics" : "Browse Topics"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setDarkMode((value) => !value)}
+              className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"
+            >
+              {darkMode ? "Light" : "Dark"}
+            </button>
+          </div>
+
+          <div className="flex flex-col gap-3 lg:flex-row lg:gap-4">
+          <aside
+            className={`overflow-hidden rounded-xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 ${
+              showSidebar ? "block" : "hidden"
+            } lg:block lg:h-[calc(100vh-2rem)] lg:w-80 lg:shrink-0`}
+          >
             <div className="border-b border-slate-200 p-3 dark:border-slate-800">
               <h1 className="text-lg font-semibold">Defence Prep Assistant</h1>
               <p className="text-sm text-slate-600 dark:text-slate-300">
@@ -85,11 +108,12 @@ export function TopicWorkspace({ topicId }: TopicWorkspaceProps) {
               </select>
             </div>
 
-            <div className="h-[calc(100%-190px)] overflow-y-auto p-2">
+            <div className="max-h-[50vh] overflow-y-auto p-2 lg:h-[calc(100%-190px)] lg:max-h-none">
               {filteredTopics.map((item) => (
                 <Link
                   key={item.id}
                   href={`/topic/${item.id}`}
+                  onClick={() => setShowSidebar(false)}
                   className={`mb-1 block rounded-lg p-2 text-sm transition ${
                     item.id === topic.id
                       ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
@@ -113,15 +137,15 @@ export function TopicWorkspace({ topicId }: TopicWorkspaceProps) {
             </div>
           </aside>
 
-          <main className="min-h-[calc(100vh-2rem)] flex-1 rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+          <main className="min-h-[calc(100vh-2rem)] flex-1 rounded-xl border border-slate-200 bg-white p-3 sm:p-4 dark:border-slate-800 dark:bg-slate-900">
             <header className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-4 dark:border-slate-800">
-              <div>
+              <div className="min-w-0 flex-1">
                 <p className="text-sm text-slate-500">{topic.domain}</p>
-                <h2 className="text-2xl font-bold">
+                <h2 className="break-words text-xl font-bold sm:text-2xl">
                   {topic.id}. {topicTitle}
                 </h2>
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div className="hidden flex-wrap gap-2 lg:flex">
                 <button
                   type="button"
                   onClick={() => setDarkMode((value) => !value)}
@@ -158,21 +182,23 @@ export function TopicWorkspace({ topicId }: TopicWorkspaceProps) {
               />
             </div>
 
-            <div className="mb-4 flex flex-wrap gap-2 border-b border-slate-200 pb-3 dark:border-slate-800">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.key}
-                  type="button"
-                  onClick={() => setActiveTab(tab.key)}
-                  className={`rounded-md px-3 py-2 text-sm ${
-                    activeTab === tab.key
-                      ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
-                      : "border border-slate-300 dark:border-slate-700"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
+            <div className="mb-4 overflow-x-auto border-b border-slate-200 pb-3 dark:border-slate-800">
+              <div className="flex w-max gap-2">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.key}
+                    type="button"
+                    onClick={() => setActiveTab(tab.key)}
+                    className={`whitespace-nowrap rounded-md px-3 py-2 text-sm ${
+                      activeTab === tab.key
+                        ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
+                        : "border border-slate-300 dark:border-slate-700"
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {activeTab === "overview" && (
@@ -316,6 +342,7 @@ export function TopicWorkspace({ topicId }: TopicWorkspaceProps) {
               </section>
             )}
           </main>
+          </div>
         </div>
       </div>
     </div>
